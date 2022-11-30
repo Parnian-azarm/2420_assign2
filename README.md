@@ -4,6 +4,8 @@ This repo contains files for the second assignment.
 
 In this README, you will be building a VPC that has a load balancer which distributes HTTP traffic to your servers and a firewall that allows incoming SSH and HTTP traffic.
 
+This README mainly focuses on Window users.
+
 ---
 
 # <ins>**Table of Content**</ins>
@@ -20,6 +22,7 @@ In this README, you will be building a VPC that has a load balancer which distri
   - [**Create Firewall**](#create-firewall)
 - [**Create New Regular User**](#create-new-regular-user)
 - [**Install Caddy Web Server**](#install-caddy-web-server)
+- [**Write the Web App**](#write-the-web-app)
 - [**Go to top**](#go-to-top)
 
 ---
@@ -221,7 +224,80 @@ We will configure this later. Repeat the above steps for the second droplet.
 
 ---
 
+# <ins>**Write the Web App**</ins>
 
+Below, you will be writing a simple web app.
+
+1. Create a new directory on `WSL` called `2420-assign-two`.
+   
+```
+username@wsl:~$ mkdir 2420-assign-two
+```
+
+2. In the `2420-assign-two` directory, create two directories called `html` and `src`.
+
+```
+username@wsl:~$ mkdir 2420-assign-two/html && mkdir 2420-assign-two/src
+```
+
+3. Create a simple, but complete `index.html` file in the `html` directory.
+
+```
+username@wsl:~$ vim 2420-assign-two/html/index.html
+```
+
+4. Inside the `src` directory, create a new node project.
+
+```
+username@wsl:~$ cd 2420-assign-two/src && curl https://get.volta.sh | bash
+
+username@wsl:~/2420-assign-two/src$ source ~/.bashrc
+
+username@wsl:~/2420-assign-two/src$ volta install node
+
+username@wsl:~/2420-assign-two/src$ npm init
+
+username@wsl:~/2420-assign-two/src$ npm install fastify
+```
+
+Desired output:
+![volta](screenshots/volta.png "volta")
+
+> **Note:** If you do not have `npm`, you can try installing it with `sudo apt install npm` or `volta install npm`.
+
+5. Create a new file called `index.js` and add the following fastify code.
+
+```
+// Require the framework and instantiate it
+const fastify = require('fastify')({ logger: true })
+
+// Declare a route
+fastify.get('/', async (request, reply) => {
+  return { hello: 'Server x' }
+})
+
+// Run the server!
+const start = async () => {
+  try {
+    await fastify.listen({ port: 3000 })
+  } catch (err) {
+    fastify.log.error(err)
+    process.exit(1)
+  }
+}
+start()
+```
+
+6. Test your server locally, and go to the provided link.
+
+```
+username@wsl:~/2420-assign-two/src$ node index.js
+```
+
+Desired outputs:
+![run node](screenshots/run-node.png "run node")  
+
+![test server](screenshots/test-server.png "test server")
 
 ---
 
