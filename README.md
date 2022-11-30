@@ -13,7 +13,7 @@ In this README, you will be building a VPC that has a load balancer which distri
 - [**Set B Members**](#set-b-members)
 - [**Technologies Used**](#technologies-used)
 - [**Prerequisites**](#prerequisites)
-- [**Instructions**](#instructions)
+- [**DO Setup**](#do-setup)
   - [**Creating VPC**](#creating-vpc)
   - [**Creating Droplets**](#creating-droplets)
   - [**Creating Load Balancer**](#creating-load-balancer)
@@ -47,7 +47,7 @@ In this README, you will be building a VPC that has a load balancer which distri
 
 ---
 
-# <ins>**Instructions**</ins>
+# <ins>**DO Setup**</ins>
 
 Below, you will be creating your own VPC, DO droplets, and load balancer.
 
@@ -133,6 +133,10 @@ Awesome! You have created a load balancer.
 3. Apply your droplets and create the firewall.
 
 ![apply droplets](screenshots/create-fw-droplets.png "apply droplets")
+
+Nice! You have created a firewall.
+
+> **Note:** You have reached the end of the DO setup.
 
 ---
 
