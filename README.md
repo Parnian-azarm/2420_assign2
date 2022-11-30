@@ -18,6 +18,7 @@ In this README, you will be building a VPC that has a load balancer which distri
   - [**Creating Droplets**](#creating-droplets)
   - [**Creating Load Balancer**](#creating-load-balancer)
   - [**Creating Firewall**](#creating-firewall)
+- [**Creating New Regular User**](#creating-new-regular-user)
 
 ---
 
@@ -137,6 +138,54 @@ Awesome! You have created a load balancer.
 Nice! You have created a firewall.
 
 > **Note:** You have reached the end of the DO setup.
+
+---
+
+# <ins>**Creating New Regular User**</ins>
+
+Below, you will be creating a new regular user on both of your droplets.
+
+> **Note:** To make your life easier, you can copy and paste the commands from the first droplet to the second one on a 2nd Terminal.
+
+1. From WSL, SSH connect into your first droplet.
+
+```
+ssh -i ~/.ssh/<sshkey_name> root@<droplet-ip>
+```
+
+2. Create a new user with the following conditions:
+
+   - Add to `sudo` group
+   - Create a home directory
+   - Create a password
+   
+![create new user](screenshots/new-user.png "create new user")
+
+3. Exit the root user and SSH into your new user.
+
+```
+ssh -i ~/.ssh/<sshkey_name> <username>@<droplet-ip>
+```
+
+4. Edit the `/etc/ssh/sshd_config` file with `vim` or `vi` and change the following settings:
+
+   - `PermitRootLogin` to `no`
+
+![permitrootlogin](screenshots/permitrootlogin.png "permitrootlogin")
+
+5. Restart the SSH service.
+
+```
+username@droplet:~$ sudo service ssh restart
+```
+
+6. Update any installed packages.
+
+```
+username@droplet:~$ sudo apt update && sudo apt upgrade
+```
+
+Great. You have created a new regular user. Repeat the above steps for the second droplet.
 
 ---
 
