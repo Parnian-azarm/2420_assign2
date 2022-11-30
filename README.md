@@ -299,6 +299,19 @@ Desired outputs:
 
 ![test server](screenshots/test-server.png "test server")
 
+7. Finally, move your `2420-assign-two` directory to both your droplets.
+
+```
+username@wsl:~$ rsync -r 2420-assign-two "<username>@<droplet-ip>:~/" -e "ssh -i ~/.ssh/<sshkey-name> -o StrictHostKeyChecking=no"
+```
+
+Desired output:
+![rsync output](screenshots/rsync-output.png "rsync output")
+
+Good job. You have written a simple web app.
+
 ---
+
+
 
 # [<ins>**Go to top**</ins>](#2420-assignment-2)
