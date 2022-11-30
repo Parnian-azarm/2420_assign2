@@ -23,6 +23,9 @@ This README mainly focuses on Window users.
 - [**Create New Regular User**](#create-new-regular-user)
 - [**Install Caddy Web Server**](#install-caddy-web-server)
 - [**Write the Web App**](#write-the-web-app)
+- [**Move the Web App**](#move-the-web-app)
+- [**Configure Caddy**](#configure-caddy)
+- [**Install node and npm with Volta**](#install-node-and-npm-with-volta)
 - [**Go to top**](#go-to-top)
 
 ---
@@ -260,7 +263,7 @@ username@wsl:~/2420-assign-two/src$ npm init
 username@wsl:~/2420-assign-two/src$ npm install fastify
 ```
 
-Desired output:
+Desired output:  
 ![volta](screenshots/volta.png "volta")
 
 > **Note:** If you do not have `npm`, you can try installing it with `sudo apt install npm` or `volta install npm`.
@@ -294,7 +297,7 @@ start()
 username@wsl:~/2420-assign-two/src$ node index.js
 ```
 
-Desired outputs:
+Desired outputs:  
 ![run node](screenshots/run-node.png "run node")  
 
 ![test server](screenshots/test-server.png "test server")
@@ -305,13 +308,92 @@ Desired outputs:
 username@wsl:~$ rsync -r 2420-assign-two "<username>@<droplet-ip>:~/" -e "ssh -i ~/.ssh/<sshkey-name> -o StrictHostKeyChecking=no"
 ```
 
-Desired output:
+Desired output:  
 ![rsync output](screenshots/rsync-output.png "rsync output")
 
 Good job. You have written a simple web app.
 
 ---
 
+# <ins>**Move the Web App**</ins>
 
+Below, you will be moving the web app from both of your droplets.
+
+1. Move the `index.html` file to `/var/www/html/` directory.
+
+```
+username@droplet:~$ sudo mkdir -p /var/www/html/
+username@droplet:~$ sudo mv ~/2420-assign-two/html/index.html /var/www/html/
+```
+
+2. Move the `2420-assign-two/src` directory to `/var/www/` directory.
+
+```
+username@droplet:~$ sudo mv ~/2420-assign-two/src /var/www/
+```
+
+Desired output:  
+![move output](screenshots/move-output.png "move output")
+
+Again, repeat the above steps for the second droplet.
+
+---
+
+# <ins>**Configure Caddy**</ins>
+
+Below, you will be configuring Caddy for both of your droplets.
+
+1. In `WSL`, create a new file called `Caddyfile` in the `2420-assign-two` directory with the following content.
+
+```
+http:// {
+    root * /var/www/html
+    reverse_proxy /api localhost:5050
+    file_server
+}
+```
+
+2. Again, move the `2420-assign-two` directory to both your droplets.
+
+```
+username@wsl:~$ rsync -r 2420-assign-two "<username>@<droplet-ip>:~/" -e "ssh -i ~/.ssh/<sshkey-name> -o StrictHostKeyChecking=no"
+```
+
+3. In both your droplets, move the `Caddyfile` to the `/etc/caddy` directory.
+
+```
+username@droplet:~$ sudo mkdir /etc/caddy/
+
+username@droplet:~$ sudo cp 2420-assign-two/Caddyfile /etc/caddy/
+```
+
+4. In both your droplets, move the `caddy` binary that we installed previously to the `/usr/bin` directory.
+
+```
+username@droplet:~$ sudo cp caddy /usr/bin/
+```
+
+Desired output:  
+![move files](screenshots/move-files.png "move files")
+
+Nice job. You have configured your Caddyfile.
+
+---
+
+# <ins>**Install node and npm with Volta**</ins>
+
+Below, you will be installing node and npm with Volta for both of your droplets.
+
+1. In both your droplets, install node and npm with Volta.
+
+```
+username@droplet:~$ curl https://get.volta.sh | bash
+username@droplet:~$ source ~/.bashrc
+username@droplet:~$ volta install node
+username@droplet:~$ volta install npm
+```
+
+Desired output:  
+![volta install](screenshots/volta-droplets.png "volta install")
 
 # [<ins>**Go to top**</ins>](#2420-assignment-2)
