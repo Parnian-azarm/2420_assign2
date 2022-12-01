@@ -1,0 +1,15 @@
+[Unit]
+Description=run node application service file
+After=network.target
+
+[Service]
+Type=simple
+User=nazira
+Group=nazira
+ExecStart=/home/nazira/.volta/bin/node /var/www/src/index.js
+Restart=on-failure
+RestartSec=5
+SyslogIdentifier=hello_web
+
+[Install]
+WantedBy=multi-user.target
