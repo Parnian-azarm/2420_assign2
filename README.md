@@ -8,39 +8,40 @@ In this README, you will be building a VPC that has a load balancer which distri
 
 This README mainly focuses on Window users.
 
----
+<br>
 
-# <ins>**Table of Content**</ins>
+# <ins>**1. Table of Content**</ins>
 
 - [**2420 Assignment 2**](#2420-assignment-2)
-- [**Table of Content**](#table-of-content)
-- [**Set B Members**](#set-b-members)
-- [**Technologies Used**](#technologies-used)
-- [**Prerequisites**](#prerequisites)
-- [**DO Setup**](#do-setup)
-  - [**Create VPC**](#create-vpc)
-  - [**Create Droplets**](#create-droplets)
-  - [**Create Load Balancer**](#create-load-balancer)
-  - [**Create Firewall**](#create-firewall)
-- [**Create New Regular User**](#create-new-regular-user)
-- [**Install Caddy Web Server**](#install-caddy-web-server)
-- [**Write the Web App**](#write-the-web-app)
-- [**Move the Web App**](#move-the-web-app)
-- [**Configure Caddy**](#configure-caddy)
-- [**Install node and npm with Volta**](#install-node-and-npm-with-volta)
-- [**Create Caddy Service File**](#create-caddy-service-file)
-- [**Node Service File**](#node-service-file)
+- [**1. Table of Content**](#1-table-of-content)
+- [**2. Set B Members**](#2-set-b-members)
+- [**3. Technologies Used**](#3-technologies-used)
+- [**4. Prerequisites**](#4-prerequisites)
+- [**5. DO Setup**](#5-do-setup)
+  - [**5.1. Create VPC**](#51-create-vpc)
+  - [**5.2. Create Droplets**](#52-create-droplets)
+  - [**5.3. Create Load Balancer**](#53-create-load-balancer)
+  - [**5.4. Create Firewall**](#54-create-firewall)
+- [**6. Create New Regular User**](#6-create-new-regular-user)
+- [**7. Install Caddy Web Server**](#7-install-caddy-web-server)
+- [**8. Web App**](#8-web-app)
+  - [**8.1. Write the Web App**](#81-write-the-web-app)
+  - [**8.2. Move the Web App**](#82-move-the-web-app)
+- [**9. Configure Caddy**](#9-configure-caddy)
+- [**10. Install node and npm with Volta**](#10-install-node-and-npm-with-volta)
+- [**11. Create Caddy Service File**](#11-create-caddy-service-file)
+- [**12. Node Service File**](#12-node-service-file)
 - [**Go to top**](#go-to-top)
 
----
+<br>
 
-# <ins>**Set B Members**</ins>
+# <ins>**2. Set B Members**</ins>
 
 - Nazira Fakhrurradi (A01279940)
 
----
+<br>
 
-# <ins>**Technologies Used**</ins>
+# <ins>**3. Technologies Used**</ins>
 
 - Bash
 - WSL Ubuntu
@@ -51,20 +52,20 @@ This README mainly focuses on Window users.
 - Volta (Node.js version manager)
 - Fastify (Node.js web framework)
 
----
+<br>
 
-# <ins>**Prerequisites**</ins>
+# <ins>**4. Prerequisites**</ins>
 
 - A DigitalOcean account
 - WSL Ubuntu installed on your machine (with a regular user created)
 
----
+<br>
 
-# <ins>**DO Setup**</ins>
+# <ins>**5. DO Setup**</ins>
 
 Below, you will be creating your own VPC, DO droplets, and load balancer.
 
-## <ins>**Create VPC**</ins>
+## <ins>**5.1. Create VPC**</ins>
 
 1. Create a new VPC with the following settings:
 
@@ -75,9 +76,9 @@ Below, you will be creating your own VPC, DO droplets, and load balancer.
 
 Good job! You have created a VPC.
 
----
+<br>
 
-## <ins>**Create Droplets**</ins>
+## <ins>**5.2. Create Droplets**</ins>
 
 1. Create a new SSH key pair of your choice on your machine. You can do this by running the following command in your terminal:
 
@@ -113,9 +114,9 @@ ssh-keygen [OPTIONS]
 
 Good job! You have created your droplets.
 
----
+<br>
 
-## <ins>**Create Load Balancer**</ins>
+## <ins>**5.3. Create Load Balancer**</ins>
 
 1. Create a new load balancer with the following settings:
 
@@ -130,9 +131,9 @@ Good job! You have created your droplets.
 
 Awesome! You have created a load balancer.
 
----
+<br>
 
-## <ins>**Create Firewall**</ins>
+## <ins>**5.4. Create Firewall**</ins>
 
 1. Create a new firewall with the following settings:
 
@@ -151,9 +152,9 @@ Nice! You have created a firewall.
 
 > **Note:** You have reached the end of the DO setup.
 
----
+<br>
 
-# <ins>**Create New Regular User**</ins>
+# <ins>**6. Create New Regular User**</ins>
 
 Below, you will be creating a new regular user on both of your droplets.
 
@@ -203,9 +204,9 @@ username@droplet:~$ sudo apt update && sudo apt upgrade
 
 Great. You have created a new regular user. Repeat the above steps for the second droplet.
 
----
+<br>
 
-# <ins>**Install Caddy Web Server**</ins>
+# <ins>**7. Install Caddy Web Server**</ins>
 
 Below, you will be installing Caddy on both of your droplets. Again, you can copy and paste the commands from the first droplet to the second one on a 2nd Terminal.
 
@@ -229,9 +230,11 @@ Desired output:
 
 We will configure this later. Repeat the above steps for the second droplet.
 
----
+<br>
 
-# <ins>**Write the Web App**</ins>
+# <ins>**8. Web App**</ins>
+
+## <ins>**8.1. Write the Web App**</ins>
 
 Below, you will be writing a simple web app.
 
@@ -317,9 +320,9 @@ Desired output:
 
 Good job. You have written a simple web app.
 
----
+<br>
 
-# <ins>**Move the Web App**</ins>
+## <ins>**8.2. Move the Web App**</ins>
 
 Below, you will be moving the web app from both of your droplets.
 
@@ -341,9 +344,9 @@ Desired output:
 
 > **IMPORTANT:** Repeat the above steps for the second droplet, but this time, change the structure of the `index.html` file to show that it is from the second server.
 
----
+<br>
 
-# <ins>**Configure Caddy**</ins>
+# <ins>**9. Configure Caddy**</ins>
 
 Below, you will be configuring Caddy for both of your droplets.
 
@@ -382,9 +385,9 @@ Desired output:
 
 Nice job. You have configured your Caddyfile.
 
----
+<br>
 
-# <ins>**Install node and npm with Volta**</ins>
+# <ins>**10. Install node and npm with Volta**</ins>
 
 Below, you will be installing node and npm with Volta for both of your droplets.
 
@@ -400,9 +403,11 @@ username@droplet:~$ volta install npm
 Desired output:  
 ![volta install](screenshots/volta-droplets.png "volta install")
 
----
+Awesome, you have installed node and npm with Volta.
 
-# <ins>**Create Caddy Service File**</ins>
+<br>
+
+# <ins>**11. Create Caddy Service File**</ins>
 
 Below, you will be creating a Caddy service file for both of your droplets.
 
@@ -443,9 +448,11 @@ username@droplet:~$ sudo systemctl status caddy
 Desired output:  
 ![caddy status](screenshots/create-caddy-service.png "create caddy service")
 
----
+Nice job. You have created a Caddy service file.
 
-# <ins>**Node Service File**</ins>
+<br>
+
+# <ins>**12. Node Service File**</ins>
 
 Below, you will be writing the node service file for both of your droplets.
 
@@ -505,5 +512,7 @@ Desired output:
 ![server api](screenshots/server-api.png "server api")
 
 > **Note:** If you can see the output of the `index.html` file from both droplets, then you have successfully completed the walkthrough.
+
+<br>
 
 # [<ins>**Go to top**</ins>](#2420-assignment-2)
