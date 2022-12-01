@@ -1,5 +1,7 @@
 # <ins>**2420 Assignment 2**</ins>
 
+> **IMPORTANT** My load balancer ip address: http://24.199.69.194/
+
 This repo contains files for the second assignment.
 
 In this README, you will be building a VPC that has a load balancer which distributes HTTP traffic to your servers and a firewall that allows incoming SSH and HTTP traffic.
@@ -26,6 +28,8 @@ This README mainly focuses on Window users.
 - [**Move the Web App**](#move-the-web-app)
 - [**Configure Caddy**](#configure-caddy)
 - [**Install node and npm with Volta**](#install-node-and-npm-with-volta)
+- [**Create Caddy Service File**](#create-caddy-service-file)
+- [**Node Service File**](#node-service-file)
 - [**Go to top**](#go-to-top)
 
 ---
@@ -217,7 +221,7 @@ Desired output:
 2. Extract the `tar.gz` file.
 
 ```
-username@droplet:~$ tar xvf caddy_2.6.2_linux_amd64.tar.gz
+username@droplet:~$ tar -xvf caddy_2.6.2_linux_amd64.tar.gz
 ```
 
 Desired output:  
@@ -275,14 +279,14 @@ Desired output:
 const fastify = require('fastify')({ logger: true })
 
 // Declare a route
-fastify.get('/', async (request, reply) => {
+fastify.get('/api', async (request, reply) => {
   return { hello: 'Server x' }
 })
 
 // Run the server!
 const start = async () => {
   try {
-    await fastify.listen({ port: 3000 })
+    await fastify.listen({ port: 5050 })
   } catch (err) {
     fastify.log.error(err)
     process.exit(1)
@@ -302,7 +306,7 @@ Desired outputs:
 
 ![test server](screenshots/test-server.png "test server")
 
-7. Finally, move your `2420-assign-two` directory to both your droplets.
+7. Finally, copy your `2420-assign-two` directory to both your droplets.
 
 ```
 username@wsl:~$ rsync -r 2420-assign-two "<username>@<droplet-ip>:~/" -e "ssh -i ~/.ssh/<sshkey-name> -o StrictHostKeyChecking=no"
@@ -335,7 +339,7 @@ username@droplet:~$ sudo mv ~/2420-assign-two/src /var/www/
 Desired output:  
 ![move output](screenshots/move-output.png "move output")
 
-Again, repeat the above steps for the second droplet.
+> **IMPORTANT:** Repeat the above steps for the second droplet, but this time, change the structure of the `index.html` file to show that it is from the second server.
 
 ---
 
@@ -353,7 +357,7 @@ http:// {
 }
 ```
 
-2. Again, move the `2420-assign-two` directory to both your droplets.
+2. Again, copy the `2420-assign-two` directory to both your droplets.
 
 ```
 username@wsl:~$ rsync -r 2420-assign-two "<username>@<droplet-ip>:~/" -e "ssh -i ~/.ssh/<sshkey-name> -o StrictHostKeyChecking=no"
@@ -395,5 +399,111 @@ username@droplet:~$ volta install npm
 
 Desired output:  
 ![volta install](screenshots/volta-droplets.png "volta install")
+
+---
+
+# <ins>**Create Caddy Service File**</ins>
+
+Below, you will be creating a Caddy service file for both of your droplets.
+
+1. In `WSL`, create a new file called `caddy.service` in the `2420-assign-two` directory with the following content.
+
+```
+[Unit]
+Description=Serve HTML in /var/www using caddy
+After=network.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/caddy run --config /etc/caddy/Caddyfile
+ExecReload=/usr/bin/caddy reload --config /etc/caddy/Caddyfile
+TimeoutStopSec=5
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target
+```
+
+3. Again, copy the `2420-assign-two` directory to both your droplets.
+
+2. In both your droplets, start and enable the Caddy service.
+
+```
+username@droplet:~$ sudo systemctl daemon-reload
+username@droplet:~$ sudo systemctl start caddy
+username@droplet:~$ sudo systemctl enable --now caddy
+```
+
+3. Finally, check the status.
+
+```
+username@droplet:~$ sudo systemctl status caddy
+```
+
+Desired output:  
+![caddy status](screenshots/create-caddy-service.png "create caddy service")
+
+---
+
+# <ins>**Node Service File**</ins>
+
+Below, you will be writing the node service file for both of your droplets.
+
+1. In `WSL`, create a new file called `hello_web.service` in the `2420-assign-two` directory with the following content.
+
+```
+[Unit]
+Description=run node application service file
+After=network.target
+
+[Service]
+Type=simple
+User=<username>
+Group=<username>
+ExecStart=/home/<username>/.volta/bin/node /var/www/src/index.js
+Restart=on-failure
+RestartSec=5
+SyslogIdentifier=hello_web
+
+[Install]
+WantedBy=multi-user.target
+```
+
+2. Again, copy the `2420-assign-two` directory to both your droplets.
+
+```
+username@wsl:~$ rsync -r 2420-assign-two "<username>@<droplet-ip>:~/" -e "ssh -i ~/.ssh/<sshkey-name> -o StrictHostKeyChecking=no"
+```
+
+3. In both your droplets, move the `hello_web.service` file to the `/etc/systemd/system` directory.
+
+```
+username@droplet:~$ sudo cp 2420-assign-two/hello_web.service /etc/systemd/system/
+```
+
+4. Start and enable the node service.
+
+```
+username@droplet:~$ sudo systemctl daemon-reload
+username@droplet:~$ sudo systemctl start hello_web
+username@droplet:~$ sudo systemctl enable --now hello_web
+```
+
+Desired output:  
+![hello web service](screenshots/hello_web.png "hello web service")
+
+5. Finally, check the load balancer IP address.
+
+![server 1](screenshots/server1.png "server 1")
+
+- Droplet 2:
+
+![server 2](screenshots/server2.png "server 2")
+
+- Both droplets:
+
+![server api](screenshots/server-api.png "server api")
+
+> **Note:** If you can see the output of the `index.html` file from both droplets, then you have successfully completed the walkthrough.
 
 # [<ins>**Go to top**</ins>](#2420-assignment-2)
